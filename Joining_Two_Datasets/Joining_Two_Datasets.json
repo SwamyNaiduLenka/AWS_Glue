@@ -1,0 +1,41 @@
+{
+  "name" : "Joining_Two_Datasets",
+  "jobMode" : "VISUAL",
+  "description" : "Joining_Two_Datasets",
+  "role" : "arn:aws:iam::151461029816:role/service-role/AWSGlueServiceRole-CrawlerNew",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-151461029816-us-east-1/scripts/Joining_Two_Datasets.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-151461029816-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "false",
+    "--enable-observability-metrics" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-151461029816-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 2,
+  "timeout" : 2880,
+  "maxCapacity" : 2.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 2,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1726850499512\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://gluepl2/transactionsdata/transactionsdata.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"Amazon S3\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"transactionid\",\"Type\":\"string\"},{\"Name\":\"customerid\",\"Type\":\"string\"},{\"Name\":\"amount\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://gluepl2/transactionsdata/\"],\"QuoteChar\":\"quote\",\"Recurse\":true,\"Separator\":\"comma\",\"WithHeader\":true}},\"node-1726850554434\":{\"Join\":{\"Columns\":[{\"From\":\"node-1726850660426\",\"Keys\":[[\"customerid\"]]},{\"From\":\"node-1726850718027\",\"Keys\":[[\"customerid\"]]}],\"Inputs\":[\"node-1726850660426\",\"node-1726850718027\"],\"JoinType\":\"equijoin\",\"Name\":\"Join\"}},\"node-1726850470993\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://gluepl2/customerdata/customerdata.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"Amazon S3\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"customerid\",\"Type\":\"string\"},{\"Name\":\"name\",\"Type\":\"string\"},{\"Name\":\"city\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://gluepl2/customerdata/\"],\"QuoteChar\":\"quote\",\"Recurse\":true,\"Separator\":\"comma\",\"WithHeader\":true}},\"node-1726850800441\":{\"S3GlueParquetTarget\":{\"AutoDataQuality\":{\"IsEnabled\":false},\"Compression\":\"uncompressed\",\"Inputs\":[\"node-1726850554434\"],\"Name\":\"Amazon S3\",\"PartitionKeys\":[],\"Path\":\"s3://gluepl2/output/\",\"SchemaChangePolicy\":{\"EnableUpdateCatalog\":false}}},\"node-1726850660426\":{\"ApplyMapping\":{\"Inputs\":[\"node-1726850470993\"],\"Mapping\":[{\"Dropped\":false,\"FromPath\":[\"customerid\"],\"FromType\":\"string\",\"ToKey\":\"customerid\",\"ToType\":\"int\"},{\"Dropped\":false,\"FromPath\":[\"name\"],\"FromType\":\"string\",\"ToKey\":\"name\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"city\"],\"FromType\":\"string\",\"ToKey\":\"city\",\"ToType\":\"string\"}],\"Name\":\"Change Schema\"}},\"node-1726850718027\":{\"ApplyMapping\":{\"Inputs\":[\"node-1726850499512\"],\"Mapping\":[{\"Dropped\":false,\"FromPath\":[\"transactionid\"],\"FromType\":\"string\",\"ToKey\":\"transactionid\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"customerid\"],\"FromType\":\"string\",\"ToKey\":\"customerid\",\"ToType\":\"int\"},{\"Dropped\":false,\"FromPath\":[\"amount\"],\"FromType\":\"string\",\"ToKey\":\"amount\",\"ToType\":\"long\"}],\"Name\":\"Change Schema\"}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "AWS_Glue",
+    "branch" : "main",
+    "folder" : "Joining_Two_Datasets"
+  }
+}
